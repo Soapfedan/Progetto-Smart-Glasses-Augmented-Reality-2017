@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="QCAR_Dataset_config.xsd">
   <TargetSet version="5.0" toolVersion="4.2.0">
+    <ObjectTarget bbox="0.0 0.0 0.0 142.5 95.0 95.0" captureAppVersion="1.0.0" lastSaved="2017-07-26 13:39:50" name="Usb" targetId="3b4d7776065f49728563703c408ad120" version="2.0" />
     <ObjectTarget bbox="0.0 0.0 0.0 142.5 95.0 95.0" captureAppVersion="1.0.0" lastSaved="2017-07-25 15:53:58" name="bbank" targetId="6af2a147be3a4557be14921c8a997a99" version="2.0" />
   </TargetSet>
 </QCARInfo>
