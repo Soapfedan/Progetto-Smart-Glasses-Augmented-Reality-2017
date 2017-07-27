@@ -17,14 +17,16 @@ namespace Vuforia
         #region PRIVATE_MEMBER_VARIABLES
  
         private TrackableBehaviour mTrackableBehaviour;
-        private GameObject Green_cube, Red_cube, White_cube, Blue_cube;
-    
+        
+      
+
+
         #endregion // PRIVATE_MEMBER_VARIABLES
 
 
 
         #region UNTIY_MONOBEHAVIOUR_METHODS
-    
+
         void Start()
         {
             mTrackableBehaviour = GetComponent<TrackableBehaviour>();
@@ -32,11 +34,10 @@ namespace Vuforia
             {
                 mTrackableBehaviour.RegisterTrackableEventHandler(this);
             }
-            Red_cube = GameObject.Find("Red_cube");
-            Green_cube = GameObject.Find("Green_cube");
-            Blue_cube = GameObject.Find("Blue_cube");
-            White_cube = GameObject.Find("White_cube");
+            
+
         }
+        
 
         #endregion // UNTIY_MONOBEHAVIOUR_METHODS
 
@@ -44,7 +45,7 @@ namespace Vuforia
 
         #region PUBLIC_METHODS
 
-        
+
 
 
         /// <summary>
@@ -78,7 +79,7 @@ namespace Vuforia
         {
             Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
             Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
-
+            
             // Enable rendering:
             foreach (Renderer component in rendererComponents)
             {
@@ -90,21 +91,21 @@ namespace Vuforia
             {
                 component.enabled = true;
             }
+           
 
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
-            /*switch (mTrackableBehaviour.TrackableName) {
-                case "usb":
-                    Green_cube.GetComponentInChildren<Renderer>(true).enabled = true;
-                    Blue_cube.GetComponentInChildren<Renderer>(true).enabled = true;
+            switch (mTrackableBehaviour.TrackableName) {
+                case "fire":
+                    Debug.Log("Trakable fire");
+                    
                     break;
                 case "bbank":
-                    Red_cube.GetComponentInChildren<Renderer>(true).enabled = true;
-                    White_cube.GetComponentInChildren<Renderer>(true).enabled = true;
+                    Debug.Log("Trakable bbank");                    
                     break;
-                default:
+                default:                    
                     break;
                     
-            }*/
+            }
         }
 
 
@@ -125,7 +126,8 @@ namespace Vuforia
                 component.enabled = false;
             }
 
-            //Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
+            Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
+
         }
 
         #endregion // PRIVATE_METHODS
