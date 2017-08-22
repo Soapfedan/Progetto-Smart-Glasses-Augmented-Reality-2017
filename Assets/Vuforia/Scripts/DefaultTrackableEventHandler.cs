@@ -97,15 +97,18 @@ namespace Vuforia
             switch (mTrackableBehaviour.TrackableName) {
                 case "fire":
                     Debug.Log("Trakable fire");
-                    
+                    State_Machine.getTargets()["fire"] = true;
                     break;
                 case "bbank":
-                    Debug.Log("Trakable bbank");                    
+                    Debug.Log("Trakable bbank");
+                    State_Machine.getTargets()["bbank"] = true;
                     break;
                 default:                    
                     break;
                     
             }
+
+           
         }
 
 
@@ -127,7 +130,20 @@ namespace Vuforia
             }
 
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
+            switch (mTrackableBehaviour.TrackableName)
+            {
+                case "fire":
+                    Debug.Log("Trakable fire");
+                    State_Machine.getTargets()["fire"] = false;
+                    break;
+                case "bbank":
+                    Debug.Log("Trakable bbank");
+                    State_Machine.getTargets()["bbank"] = false;
+                    break;
+                default:
+                    break;
 
+            }
         }
 
         #endregion // PRIVATE_METHODS

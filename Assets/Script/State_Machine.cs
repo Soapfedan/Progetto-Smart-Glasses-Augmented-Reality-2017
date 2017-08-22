@@ -4,68 +4,87 @@ using UnityEngine;
 
 public class State_Machine : MonoBehaviour {
 
-    private int currentState;
-    private int count;
-    public GameObject sphere1;
-    public GameObject sphere2;
-    public GameObject sphere3;
+    private int currentState, phase;
+    public GameObject target0,target1;
+    public GameObject pezzo;
+    private Phase[] states;
+    private static Dictionary<string, bool> targets;
 
     // Use this for initialization
     void Start () {
         Debug.Log("start state machine");
+        
+        states[0] = new Phase("pezzo5", target0, target1, "");
         currentState = 0;
-        count = 0;
-        execute(currentState);
-        sphere1.SetActive(false);
-        sphere2.SetActive(false);
-        sphere3.SetActive(false);
+        phase = 0;
+        target0.SetActive(false);
+        target1.SetActive(false);
+        pezzo.SetActive(false);
+        targets.Add("fire", false);
+        targets.Add("bbank", false);
+
     }
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown(KeyCode.Space)) execute(currentState);
+		execute(currentState);
 	}
 
     void execute(int state) {
         switch(state)
         {
-            case 0:
+            case 0: //Stato in cui si deve inquadrare il primo pezzo per iniziare
                 Debug.Log("stato " + currentState);
-                count++;
+                Debug.Log("Inquadra la scena per iniziare");
+                if (Input.GetKeyDown(KeyCode.S))
+                {
+                    states[phase].getCurrTarget().SetActive(true);
+                    currentState++;                  
+                }
                 break;
-            case 1:
+            case 1: //se l'utente guarda il pezzo gli viene mostrata l'animazione
                 Debug.Log("stato " + currentState);
-                if (count==0)
+                Debug.Log("fase di ricerca");
+                if (targets["fire"].Equals(true))
                 {
-                    sphere1.SetActive(true);
+                    pezzo.SetActive(true);
+                    AnimatorController.setBool(true);
+                    AnimatorController.setElement(states[phase].getAnimName());
+                    states[phase].getNextTarget().SetActive(true);
+                    if (targets["bbank"].Equals(true))
+                    {
+                        currentState++;
+                    }
                 }
-                else if (count==1)
+                else
                 {
-                    sphere2.SetActive(true);
+                    pezzo.SetActive(false);
+                    AnimatorController.setBool(false);
+                    Debug.Log("Inquadra la scena");
+
                 }
-                else if (count==2)
-                {
-                    sphere3.SetActive(true);
-                }
-                count++;
+                
                 break;
             case 2:
-                sphere1.SetActive(true);
-                sphere2.SetActive(true);
-                sphere3.SetActive(true);
+            
                 Debug.Log("stato " + currentState);
-                break;
+                Debug.Log("Premi spazio per andare alla prossima fase");
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    currentState = 0;
+                }
+                    break;
             default:
                 break;
 
             
            
         }
-        nextState();  
+       // nextState();  
 
     }
 
-    void nextState()
+    /*void nextState()
     {
         int next;
         switch (currentState)
@@ -97,6 +116,10 @@ public class State_Machine : MonoBehaviour {
 
 
         }
-    }
+    }*/
 
+    public static Dictionary<string,bool> getTargets()
+    {
+        return targets;
+    }
     }
