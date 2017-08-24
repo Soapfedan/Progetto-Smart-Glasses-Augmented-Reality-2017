@@ -124,7 +124,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &77868980
 Transform:
   m_ObjectHideFlags: 0
@@ -281,6 +281,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 16d0ac561db0caa4ea75bedbc45526bc, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &345860816 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: 16d0ac561db0caa4ea75bedbc45526bc, type: 2}
+  m_PrefabInternal: {fileID: 345860815}
 --- !u!1 &571652401 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: 16d0ac561db0caa4ea75bedbc45526bc, type: 2}
@@ -296,7 +300,7 @@ GameObject:
   - component: {fileID: 665778760}
   - component: {fileID: 665778762}
   m_Layer: 0
-  m_Name: cono e molla
+  m_Name: cono e mola
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -660,7 +664,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1831368488
 Transform:
   m_ObjectHideFlags: 0
@@ -715,10 +719,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1831368487}
   m_Mesh: {fileID: 4300002, guid: 51b360b37e2d32a4592279a02fa48e61, type: 3}
---- !u!1 &1969385112 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 100000, guid: 16d0ac561db0caa4ea75bedbc45526bc, type: 2}
-  m_PrefabInternal: {fileID: 345860815}
 --- !u!1 &2052269989
 GameObject:
   m_ObjectHideFlags: 0
@@ -733,7 +733,7 @@ GameObject:
   - component: {fileID: 2052269991}
   m_Layer: 0
   m_Name: State_Machine_Cube
-  m_TagString: Untagged
+  m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -749,9 +749,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360213dd291b56e4394c639cbd28782e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target0: {fileID: 1969385112}
-  target1: {fileID: 571652401}
-  pezzo: {fileID: 1831368487}
+  multipleObjectArray:
+  - {fileID: 345860816}
+  - {fileID: 0}
+  - {fileID: 571652401}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!23 &2052269992
 MeshRenderer:
   m_ObjectHideFlags: 0

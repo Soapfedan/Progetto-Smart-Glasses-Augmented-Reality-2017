@@ -2,29 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Phase : MonoBehaviour {
+public class Phase {
 
     private string animationName;
     private GameObject currentTarget;
     private GameObject nextTarget;
+    private GameObject singleObjectTarget;
     private string phaseText;
 
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-    public Phase(string anim,GameObject curr,GameObject next,string text)
+    public Phase(string anim,GameObject curr,GameObject next,GameObject singleObj, string text)
     {
         animationName = anim;
         currentTarget = curr;
         nextTarget = next;
+        singleObjectTarget = singleObj;
         phaseText = text;
     }
 
@@ -41,5 +33,10 @@ public class Phase : MonoBehaviour {
     public GameObject getNextTarget()
     {
         return nextTarget;
+    }
+
+    public GameObject getSingleObject()
+    {
+        return singleObjectTarget;
     }
 }

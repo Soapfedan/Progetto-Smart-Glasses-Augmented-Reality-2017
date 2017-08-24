@@ -17,7 +17,7 @@ namespace Vuforia
         #region PRIVATE_MEMBER_VARIABLES
  
         private TrackableBehaviour mTrackableBehaviour;
-        
+        private static bool objectFound;
       
 
 
@@ -34,6 +34,7 @@ namespace Vuforia
             {
                 mTrackableBehaviour.RegisterTrackableEventHandler(this);
             }
+            objectFound = false;
             
 
         }
@@ -94,7 +95,47 @@ namespace Vuforia
            
 
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
-            switch (mTrackableBehaviour.TrackableName) {
+
+            if (objectFound)// se ha trovato l'oggetto deve aspettare la transizione nello stato successivo
+            {
+                switch (State_Machine.getSubStateNumber())
+                {
+                    case 0: //Ricerca dell'obiettivo corrente
+                        if (mTrackableBehaviour.name.Equals(State_Machine.getPhaseList()[State_Machine.getPhaseNumber()].getCurrTarget().name))
+                        { //controllo se lo ho trovato il target corrente della fase
+                            State_Machine.setCurrentTargetFlag(true);
+                            objectFound = true;
+                            State_Machine.nextState();
+                        }
+
+                        break;
+                    case 1: //Ricerca dell'oggetto singolo
+                        if (mTrackableBehaviour.name.Equals(State_Machine.getPhaseList()[State_Machine.getPhaseNumber()].getSingleObject().name)) //controllo se lo ho trovato l'oggetto singolo della fase
+                        {
+                            State_Machine.setSingleObjectFlag(true);
+                            objectFound = true;
+                            State_Machine.nextState();
+                        }
+                        break;
+                    case 3: //Ricerca dell'obiettivo finale
+                        if (mTrackableBehaviour.name.Equals(State_Machine.getPhaseList()[State_Machine.getPhaseNumber()].getNextTarget().name)) //controllo se lo ho trovato il target finale della fase
+                        {
+                            State_Machine.setNextTargetFlag(true);
+                            objectFound = true;
+                            State_Machine.nextState();
+                        }
+                        if (mTrackableBehaviour.name.Equals(State_Machine.getPhaseList()[State_Machine.getPhaseNumber()].getSingleObject().name)) //controllo se lo ho trovato l'oggetto singolo della fase
+                        {
+                            State_Machine.setSingleObjectFlag(true);
+                        }
+                        break;
+                    default: //Tutti gli altri casi
+                        break;
+
+                }
+            }
+            
+            /*switch (mTrackableBehaviour.TrackableName) {
                 case "fire":
                     Debug.Log("Trakable fire");
                     State_Machine.getTargets()["fire"] = true;
@@ -106,7 +147,7 @@ namespace Vuforia
                 default:                    
                     break;
                     
-            }
+            }*/
 
            
         }
@@ -130,7 +171,7 @@ namespace Vuforia
             }
 
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
-            switch (mTrackableBehaviour.TrackableName)
+            /*switch (mTrackableBehaviour.TrackableName)
             {
                 case "fire":
                     Debug.Log("Trakable fire");
@@ -143,9 +184,13 @@ namespace Vuforia
                 default:
                     break;
 
-            }
+            }*/
         }
 
         #endregion // PRIVATE_METHODS
+        public static void setObjectFound(bool a)
+        {
+            objectFound = a;
+        }
     }
 }

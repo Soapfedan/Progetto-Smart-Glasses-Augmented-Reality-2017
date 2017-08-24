@@ -4,32 +4,44 @@ using UnityEngine;
 
 public class State_Machine : MonoBehaviour {
 
-    private int currentState, phase;
-    public GameObject target0,target1;
-    public GameObject pezzo;
-    private Phase[] states;
-    private static Dictionary<string, bool> targets;
+    private static Phase[] phaseList;
+    private static bool currentFound, nextFound, singleFound, //flag
+        subStateTerminated; 
+    private const string OBJECT_FOUND = "OBJECT FOUND", OBJECT_NOT_FOUND = "OBJECT NOT FOUND";
+    public GameObject[] multipleObjectArray = new GameObject[10];  //global target -- single object
+    private static int phaseNum, //current phase number
+         subStateNum; //the number of the substate. A phase is a collection of substates.
 
     // Use this for initialization
     void Start () {
         Debug.Log("start state machine");
-        
-        states[0] = new Phase("pezzo5", target0, target1, "");
-        currentState = 0;
-        phase = 0;
-        target0.SetActive(false);
-        target1.SetActive(false);
-        pezzo.SetActive(false);
-        targets.Add("fire", false);
-        targets.Add("bbank", false);
 
+        phaseList = new Phase[5];//initialize the phase list
+        for(int i = 0; i < 5; i++)
+        {
+            phaseList[i] = new Phase("",                             //animation name
+                                    multipleObjectArray[2* i],       //current target
+                                    multipleObjectArray[2 * i + 2],  //next target
+                                    multipleObjectArray[2 * i + 1],  //single object
+                                    "");                             //UI text
+        }
+        phaseNum = 0;
+        subStateNum = 0;
+        currentFound = false;
+        nextFound = false;
+        singleFound = false;
+        subStateTerminated = false;
     }
 	
 	// Update is called once per frame
 	void Update () {
-		execute(currentState);
-	}
+        
+        if(Input.GetKeyDown(KeyCode.Space)&& subStateTerminated)
+		execute(subStateNum);
 
+        
+	}
+    
     void execute(int state) {
         switch(state)
         {
@@ -84,42 +96,43 @@ public class State_Machine : MonoBehaviour {
 
     }
 
-    /*void nextState()
+    public static void nextState() //metodo che reinizializza tutti i parametri per il substate successivo
     {
-        int next;
-        switch (currentState)
-        {
-            case 0:
-                if (count > 0)
-                {
-                    next = 1;
-                    count = 0;
-                    currentState = next;
-                }
-                break;
-            case 1:
-                if (count > 3)
-                {
-                    next = 2;
-                    currentState = next;
-                }
-                else
-                {
-                    count++;
-                }
-                break;
-            case 2:
-                break;
-            default:
-                break;
+        currentFound = false;
+        nextFound = false;
+        singleFound = false;
+        Vuforia.DefaultTrackableEventHandler.setObjectFound(false);
+        subStateTerminated = true;
+        subStateNum = (subStateNum++) % 3;
 
+    }
 
-
-        }
-    }*/
-
-    public static Dictionary<string,bool> getTargets()
+    public static Phase[] getPhaseList()
     {
-        return targets;
+        return phaseList;
     }
+
+    public static int getSubStateNumber()
+    {
+        return subStateNum;
     }
+   
+    public static void setCurrentTargetFlag(bool a)
+    {
+        currentFound = a;
+    }
+
+    public static void setNextTargetFlag(bool a)
+    {
+        nextFound = a;
+    }
+    public static void setSingleObjectFlag(bool a)
+    {
+        singleFound = a;
+    }
+
+    public static int getPhaseNumber()
+    {
+        return phaseNum;
+    }
+}
