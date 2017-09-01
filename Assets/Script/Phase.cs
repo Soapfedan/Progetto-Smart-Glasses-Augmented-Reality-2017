@@ -4,26 +4,21 @@ using UnityEngine;
 
 public class Phase {
 
-    private string animationName;
+    
     private GameObject currentTarget;
     private GameObject nextTarget;
     private GameObject singleObjectTarget;
     private string phaseText;
 
 
-    public Phase(string anim,GameObject curr,GameObject next,GameObject singleObj, string text)
+    public Phase(GameObject curr,GameObject next,GameObject singleObj)
     {
-        animationName = anim;
+        
         currentTarget = curr;
         nextTarget = next;
-        singleObjectTarget = singleObj;
-        phaseText = text;
+        singleObjectTarget = singleObj;        
     }
 
-    public string getAnimName()
-    {
-        return animationName;
-    }
 
     public GameObject getCurrTarget()
     {

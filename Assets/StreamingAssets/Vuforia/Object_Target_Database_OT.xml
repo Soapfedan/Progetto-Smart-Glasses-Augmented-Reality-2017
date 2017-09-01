@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="QCAR_Dataset_config.xsd">
+  <Tracking>
+    <ObjectTarget name="ptf3" />
+    <ObjectTarget name="ptf2" />
+    <ObjectTarget name="ptf1" />
+    <ObjectTarget name="pf4" />
+    <ObjectTarget name="pf3" />
+    <ObjectTarget name="pf2" />
+    <ObjectTarget name="pf1" />
+  </Tracking>
+</QCARConfig>

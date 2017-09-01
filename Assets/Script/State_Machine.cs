@@ -1,12 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Timers;
 
 public class State_Machine : MonoBehaviour {
 
     private static Phase[] phaseList;
+    private static Timer atimer;
     private static bool currentFound, nextFound, singleFound, //flag
-        subStateTerminated; 
+        subStateTerminated;
+    private const int timerInterval = 20000;
+    private static string[] uiText = {""};
     private const string OBJECT_FOUND = "OBJECT FOUND", OBJECT_NOT_FOUND = "OBJECT NOT FOUND";
     public GameObject[] multipleObjectArray = new GameObject[10];  //global target -- single object
     private static int phaseNum, //current phase number
@@ -16,94 +20,85 @@ public class State_Machine : MonoBehaviour {
     void Start () {
         Debug.Log("start state machine");
 
-        phaseList = new Phase[5];//initialize the phase list
-        for(int i = 0; i < 5; i++)
+        phaseList = new Phase[3];//initialize the phase list
+        for(int i = 0; i < 3; i++)
         {
-            phaseList[i] = new Phase("",                             //animation name
-                                    multipleObjectArray[2* i],       //current target
+            phaseList[i] = new Phase(multipleObjectArray[2* i],       //current target
                                     multipleObjectArray[2 * i + 2],  //next target
-                                    multipleObjectArray[2 * i + 1],  //single object
-                                    "");                             //UI text
+                                    multipleObjectArray[2 * i + 1]  //single object
+                                    );                             
         }
         phaseNum = 0;
         subStateNum = 0;
         currentFound = false;
         nextFound = false;
         singleFound = false;
-        subStateTerminated = false;
+        subStateTerminated = true;
     }
 	
 	// Update is called once per frame
 	void Update () {
         
-        if(Input.GetKeyDown(KeyCode.Space)&& subStateTerminated)
+        if(Input.GetKeyDown(KeyCode.Space) && subStateTerminated)
 		execute(subStateNum);
+
 
         
 	}
     
     void execute(int state) {
+        subStateTerminated = false;
+        Debug.Log("Siamo nella fase " + phaseNum);
         switch(state)
         {
-            case 0: //Stato in cui si deve inquadrare il primo pezzo per iniziare
-                Debug.Log("stato " + currentState);
-                Debug.Log("Inquadra la scena per iniziare");
-                if (Input.GetKeyDown(KeyCode.S))
-                {
-                    states[phase].getCurrTarget().SetActive(true);
-                    currentState++;                  
-                }
+            case 0: //Stato in cui si deve inquadrare il target iniziale
+                Debug.Log("stato " + subStateNum);
+                Debug.Log("Inquadra la scena per iniziare");               
                 break;
-            case 1: //se l'utente guarda il pezzo gli viene mostrata l'animazione
-                Debug.Log("stato " + currentState);
-                Debug.Log("fase di ricerca");
-                if (targets["fire"].Equals(true))
-                {
-                    pezzo.SetActive(true);
-                    AnimatorController.setBool(true);
-                    AnimatorController.setElement(states[phase].getAnimName());
-                    states[phase].getNextTarget().SetActive(true);
-                    if (targets["bbank"].Equals(true))
-                    {
-                        currentState++;
-                    }
-                }
-                else
-                {
-                    pezzo.SetActive(false);
-                    AnimatorController.setBool(false);
-                    Debug.Log("Inquadra la scena");
+            case 1: //stato in cui deve inquadarare il pezzo singolo
+                Debug.Log("stato " + subStateNum);
+                Debug.Log("inquadra l'oggetto singolo");
+                atimer = new Timer();
+                atimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+                atimer.Interval = timerInterval; //ms
+                atimer.Enabled = true;
+                atimer.Start();
+                break;
 
-                }
-                
-                break;
-            case 2:
+            case 2: //stato in cui deve inquadrare il target finale
             
-                Debug.Log("stato " + currentState);
+                Debug.Log("stato " + subStateNum);
                 Debug.Log("Premi spazio per andare alla prossima fase");
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    currentState = 0;
-                }
-                    break;
+                atimer = new Timer();
+                atimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+                atimer.Interval = timerInterval; //ms
+                atimer.Enabled = true;
+                atimer.Start();
+                break;
+
             default:
                 break;
 
             
            
         }
-       // nextState();  
+        Vuforia.DefaultTrackableEventHandler.setObjectFound(false);
+
 
     }
 
     public static void nextState() //metodo che reinizializza tutti i parametri per il substate successivo
     {
-        currentFound = false;
+        //currentFound = false;        
         nextFound = false;
-        singleFound = false;
-        Vuforia.DefaultTrackableEventHandler.setObjectFound(false);
+        singleFound = false;        
         subStateTerminated = true;
-        subStateNum = (subStateNum++) % 3;
+        atimer.Stop();
+        subStateNum = (subStateNum++) % 2;
+        if (subStateNum == 0) {
+            phaseNum++;
+        }        
+        Debug.Log("Cambiamento di stato a " + subStateNum);
 
     }
 
@@ -134,5 +129,22 @@ public class State_Machine : MonoBehaviour {
     public static int getPhaseNumber()
     {
         return phaseNum;
+    }
+
+    // Specify what you want to happen when the Elapsed event is raised.
+    private static void OnTimedEvent(object source, ElapsedEventArgs e)
+    {
+        Debug.Log("Timer scaduto!");
+        switch (subStateNum)
+        {            
+            case 1:
+                Debug.Log("Non riesco ad inquadrare l'oggetto singolo!");
+                break;
+            case 2:
+                Debug.Log("Non riesco ad inquadrare il target finale!");
+                break;
+            default:
+                break;
+        }
     }
 }

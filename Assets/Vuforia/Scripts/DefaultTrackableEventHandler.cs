@@ -34,7 +34,7 @@ namespace Vuforia
             {
                 mTrackableBehaviour.RegisterTrackableEventHandler(this);
             }
-            objectFound = false;
+            objectFound = true;
             
 
         }
@@ -96,7 +96,7 @@ namespace Vuforia
 
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
 
-            if (objectFound)// se ha trovato l'oggetto deve aspettare la transizione nello stato successivo
+            if (!objectFound)// se ha trovato l'oggetto deve aspettare la transizione nello stato successivo
             {
                 switch (State_Machine.getSubStateNumber())
                 {
@@ -117,7 +117,7 @@ namespace Vuforia
                             State_Machine.nextState();
                         }
                         break;
-                    case 3: //Ricerca dell'obiettivo finale
+                    case 2: //Ricerca dell'obiettivo finale
                         if (mTrackableBehaviour.name.Equals(State_Machine.getPhaseList()[State_Machine.getPhaseNumber()].getNextTarget().name)) //controllo se lo ho trovato il target finale della fase
                         {
                             State_Machine.setNextTargetFlag(true);
@@ -135,19 +135,6 @@ namespace Vuforia
                 }
             }
             
-            /*switch (mTrackableBehaviour.TrackableName) {
-                case "fire":
-                    Debug.Log("Trakable fire");
-                    State_Machine.getTargets()["fire"] = true;
-                    break;
-                case "bbank":
-                    Debug.Log("Trakable bbank");
-                    State_Machine.getTargets()["bbank"] = true;
-                    break;
-                default:                    
-                    break;
-                    
-            }*/
 
            
         }
@@ -171,20 +158,7 @@ namespace Vuforia
             }
 
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
-            /*switch (mTrackableBehaviour.TrackableName)
-            {
-                case "fire":
-                    Debug.Log("Trakable fire");
-                    State_Machine.getTargets()["fire"] = false;
-                    break;
-                case "bbank":
-                    Debug.Log("Trakable bbank");
-                    State_Machine.getTargets()["bbank"] = false;
-                    break;
-                default:
-                    break;
-
-            }*/
+           
         }
 
         #endregion // PRIVATE_METHODS
