@@ -5,46 +5,58 @@ using UnityEngine;
 public class AnimatorController : MonoBehaviour {
 
     public Animator anim;
-    private static bool play;
+    public GameObject[] gameobjs = new GameObject[5];
     private static string element;
 
 	// Use this for initialization
 	void Start () {
+        disableObjects();
         anim = GetComponent<Animator>();
-        play = false;
+       
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-        
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {            
-                anim.Play("pezzo5", -1, 0f);
-            }/*else if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                anim.Play("pezzo4", -1, 0f);
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                anim.Play("pezzo3", -1, 0f);
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                anim.Play("pezzo2", -1, 0f);
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha5))
-            {
-                anim.Play("pezzo1", -1, 0f);
-            }
-            */
-        //}
 
-        if (play)
+
+        if (Input.GetKeyDown(KeyCode.A))
         {
-            anim.Play(element, -1, 0f);
+            disableObjects();
+            gameobjs[0].SetActive(true);
+            anim.Play("pezzo1", -1, 0f);
+            Debug.Log(gameobjs[0].name);
         }
-        
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            disableObjects();
+            gameobjs[1].SetActive(true);
+            anim.Play("pezzo2", -1, 0f);
+            Debug.Log(gameobjs[1].name);
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            disableObjects();
+            gameobjs[2].SetActive(true);
+            anim.Play("pezzo3", -1, 0f);
+            Debug.Log(gameobjs[2].name);
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            disableObjects();
+            gameobjs[3].SetActive(true);
+            anim.Play("pezzo4", -1, 0f);
+            Debug.Log(gameobjs[3].name);
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            disableObjects();
+            gameobjs[4].SetActive(true);
+            anim.Play("pezzo5", -1, 0f);
+            Debug.Log(gameobjs[4].name);
+        }
+
+       
 
 
     }
@@ -53,8 +65,11 @@ public class AnimatorController : MonoBehaviour {
         element = elem;
     }
 
-    public static void setBool(bool pl)
+    private void disableObjects()
     {
-        play = pl;
+        for (int i = 0; i < 5; i++)
+        {
+            gameobjs[i].SetActive(false);
+        }
     }
 }

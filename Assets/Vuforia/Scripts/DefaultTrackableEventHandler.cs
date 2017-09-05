@@ -98,6 +98,7 @@ namespace Vuforia
 
             if (!objectFound)// se ha trovato l'oggetto deve aspettare la transizione nello stato successivo
             {
+                Debug.Log("Sto ricercando il pezzo dello stato " + State_Machine.getSubStateNumber());
                 switch (State_Machine.getSubStateNumber())
                 {
                     case 0: //Ricerca dell'obiettivo corrente
@@ -157,7 +158,7 @@ namespace Vuforia
                 component.enabled = false;
             }
 
-            Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
+            //Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
            
         }
 

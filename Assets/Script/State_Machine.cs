@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Timers;
+using UnityEngine.UI;
 
 public class State_Machine : MonoBehaviour {
 
@@ -10,6 +9,9 @@ public class State_Machine : MonoBehaviour {
     private static bool currentFound, nextFound, singleFound, //flag
         subStateTerminated;
     private const int timerInterval = 20000;
+    public GameObject UIPanel,responsePanel; //Ui panel where the state machine display a message.
+    private int touch;
+    public Text objectText,responseText;
     private static string[] uiText = {""};
     private const string OBJECT_FOUND = "OBJECT FOUND", OBJECT_NOT_FOUND = "OBJECT NOT FOUND";
     public GameObject[] multipleObjectArray = new GameObject[10];  //global target -- single object
@@ -34,14 +36,41 @@ public class State_Machine : MonoBehaviour {
         nextFound = false;
         singleFound = false;
         subStateTerminated = true;
+        responsePanel.SetActive(false);
+        
     }
 	
 	// Update is called once per frame
 	void Update () {
-        
-        if(Input.GetKeyDown(KeyCode.Space) && subStateTerminated)
-		execute(subStateNum);
 
+        /*if(Input.touchCount >0 && subStateTerminated)
+		execute(subStateNum);
+        */
+        if (Input.touchCount > 0)
+        {
+            switch (touch)
+            {
+                case 0:
+                    responsePanel.SetActive(true);
+                    responseText.text = OBJECT_FOUND;
+                    break;
+
+                case 1:
+                    responsePanel.SetActive(false);
+                    break;
+
+                case 2:
+                    responsePanel.SetActive(true);
+                    responseText.text = OBJECT_NOT_FOUND;
+                    break;
+                default:
+                    break;
+            }
+            touch++;
+            if (touch == 3) { touch = 0; }
+            
+        }
+        
 
         
 	}
