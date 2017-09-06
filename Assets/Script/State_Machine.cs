@@ -5,18 +5,19 @@ using UnityEngine.UI;
 public class State_Machine : MonoBehaviour {
 
     private static Phase[] phaseList;
-    private static Timer atimer;
+    private static Timer atimer,stepTimer,uiTimer;
     private static bool currentFound, nextFound, singleFound, //flag
         subStateTerminated;
-    private const int timerInterval = 20000;
+    private const int timerInterval = 20000,stepTimerInterval = 3000,uiTimerInterval = 5000;
     public GameObject UIPanel,responsePanel; //Ui panel where the state machine display a message.
     private int touch;
-    public Text objectText,responseText;
+    public static Text objectText,responseText;
     private static string[] uiText = {""};
     private const string OBJECT_FOUND = "OBJECT FOUND", OBJECT_NOT_FOUND = "OBJECT NOT FOUND";
     public GameObject[] multipleObjectArray = new GameObject[10];  //global target -- single object
     private static int phaseNum, //current phase number
          subStateNum; //the number of the substate. A phase is a collection of substates.
+    
 
     // Use this for initialization
     void Start () {
@@ -42,49 +43,41 @@ public class State_Machine : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-        /*if(Input.touchCount >0 && subStateTerminated)
-		execute(subStateNum);
-        */
-        if (Input.touchCount > 0)
+        /*
+        if (subStateTerminated && subStateNum == 1) //
         {
-            switch (touch)
-            {
-                case 0:
-                    responsePanel.SetActive(true);
-                    responseText.text = OBJECT_FOUND;
-                    break;
-
-                case 1:
-                    responsePanel.SetActive(false);
-                    break;
-
-                case 2:
-                    responsePanel.SetActive(true);
-                    responseText.text = OBJECT_NOT_FOUND;
-                    break;
-                default:
-                    break;
-            }
-            touch++;
-            if (touch == 3) { touch = 0; }
-            
+            responsePanel.SetActive(true);
+            responseText.text = "Ok oggetto rilevato";
+            stepTimer = new Timer();
+            stepTimer.Elapsed += new ElapsedEventHandler(OnStepTimedEvent);
+            stepTimer.Interval = stepTimerInterval; //ms
+            stepTimer.Enabled = true;
+            stepTimer.Start();            
+        }else if(Input.touchCount > 0 && subStateNum == 0 && subStateTerminated)
+        {
+            Vuforia.DefaultTrackableEventHandler.setObjectFound(false);
+            execute(subStateNum);
         }
-        
-
+        */
         
 	}
     
-    void execute(int state) {
+    private void execute(int state) {
         subStateTerminated = false;
         Debug.Log("Siamo nella fase " + phaseNum);
-        switch(state)
+        switch(subStateNum)
         {
             case 0: //Stato in cui si deve inquadrare il target iniziale
                 Debug.Log("stato " + subStateNum);
-                Debug.Log("Inquadra la scena per iniziare");               
+                Debug.Log("Inquadra la scena per iniziare");
+                objectText.text = "Inquadra l'oggetto di partenza";
+                atimer = new Timer();
+                atimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+                atimer.Interval = timerInterval; //ms
+                atimer.Enabled = true;
+                atimer.Start();
                 break;
-            case 1: //stato in cui deve inquadarare il pezzo singolo
+            /*case 1: //stato in cui deve inquadarare il pezzo singolo
                 Debug.Log("stato " + subStateNum);
                 Debug.Log("inquadra l'oggetto singolo");
                 atimer = new Timer();
@@ -92,12 +85,15 @@ public class State_Machine : MonoBehaviour {
                 atimer.Interval = timerInterval; //ms
                 atimer.Enabled = true;
                 atimer.Start();
-                break;
-
-            case 2: //stato in cui deve inquadrare il target finale
+                break;*/
+                
+            case 1: //stato in cui deve inquadrare il target finale
             
                 Debug.Log("stato " + subStateNum);
-                Debug.Log("Premi spazio per andare alla prossima fase");
+                Debug.Log("Inquadra l'oggeto finale");
+                objectText.text = "Inquadra il target finale";
+                AnimatorController.playAnim = true;
+                stepTimer.Stop();
                 atimer = new Timer();
                 atimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
                 atimer.Interval = timerInterval; //ms
@@ -161,19 +157,53 @@ public class State_Machine : MonoBehaviour {
     }
 
     // Specify what you want to happen when the Elapsed event is raised.
-    private static void OnTimedEvent(object source, ElapsedEventArgs e)
+    private void OnTimedEvent(object source, ElapsedEventArgs e)
     {
         Debug.Log("Timer scaduto!");
         switch (subStateNum)
         {            
-            case 1:
-                Debug.Log("Non riesco ad inquadrare l'oggetto singolo!");
+            case 0:
+                Debug.Log("Non riesco ad inquadrare il target di partenza!");
+                responsePanel.SetActive(true);
+                responseText.text = "Non ho trovato l'oggetto riprova";               
+                uiTimer = new Timer();
+                uiTimer.Elapsed += new ElapsedEventHandler(OnUITimedEvent);
+                uiTimer.Interval = uiTimerInterval; //ms
+                uiTimer.Enabled = true;
+                uiTimer.Start();
+                execute(subStateNum);
                 break;
-            case 2:
+            case 1:
                 Debug.Log("Non riesco ad inquadrare il target finale!");
+                if (!singleFound) //non è stato trovato nulla
+                {
+                    responsePanel.SetActive(true);
+                    responseText.text = "Non ho trovato l'oggetto riprova";
+                }
+                else //è stato trovato solo l'oggetto singolo
+                {
+                    responsePanel.SetActive(true);
+                    responseText.text = "Hai montato male il pezzo";
+                }
+                uiTimer = new Timer();
+                uiTimer.Elapsed += new ElapsedEventHandler(OnUITimedEvent);
+                uiTimer.Interval = uiTimerInterval; //ms
+                uiTimer.Enabled = true;
+                uiTimer.Start();
+
                 break;
             default:
                 break;
         }
+    }
+
+    private void OnStepTimedEvent(object source, ElapsedEventArgs e) {
+        responsePanel.SetActive(false);
+        execute(subStateNum);
+    }
+
+    private void OnUITimedEvent(object source, ElapsedEventArgs e)
+    {
+        responsePanel.SetActive(false);
     }
 }

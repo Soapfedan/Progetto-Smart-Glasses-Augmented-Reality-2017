@@ -95,7 +95,8 @@ namespace Vuforia
            
 
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
-
+            State_Machine.objectText.text = mTrackableBehaviour.TrackableName;
+            /*
             if (!objectFound)// se ha trovato l'oggetto deve aspettare la transizione nello stato successivo
             {
                 Debug.Log("Sto ricercando il pezzo dello stato " + State_Machine.getSubStateNumber());
@@ -110,15 +111,15 @@ namespace Vuforia
                         }
 
                         break;
-                    case 1: //Ricerca dell'oggetto singolo
+                   /* case 1: //Ricerca dell'oggetto singolo
                         if (mTrackableBehaviour.name.Equals(State_Machine.getPhaseList()[State_Machine.getPhaseNumber()].getSingleObject().name)) //controllo se lo ho trovato l'oggetto singolo della fase
                         {
                             State_Machine.setSingleObjectFlag(true);
                             objectFound = true;
                             State_Machine.nextState();
                         }
-                        break;
-                    case 2: //Ricerca dell'obiettivo finale
+                        break;*//*
+                    case 1: //Ricerca dell'obiettivo finale
                         if (mTrackableBehaviour.name.Equals(State_Machine.getPhaseList()[State_Machine.getPhaseNumber()].getNextTarget().name)) //controllo se lo ho trovato il target finale della fase
                         {
                             State_Machine.setNextTargetFlag(true);
@@ -130,11 +131,11 @@ namespace Vuforia
                             State_Machine.setSingleObjectFlag(true);
                         }
                         break;
-                    default: //Tutti gli altri casi
+                    default: //default
                         break;
 
                 }
-            }
+            }*/
             
 
            
@@ -158,7 +159,7 @@ namespace Vuforia
                 component.enabled = false;
             }
 
-            //Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
+            Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
            
         }
 
