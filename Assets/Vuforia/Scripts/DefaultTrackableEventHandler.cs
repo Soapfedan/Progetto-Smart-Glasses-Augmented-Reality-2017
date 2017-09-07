@@ -95,8 +95,8 @@ namespace Vuforia
            
 
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
-            State_Machine.objectText.text = mTrackableBehaviour.TrackableName;
-            /*
+           
+            
             if (!objectFound)// se ha trovato l'oggetto deve aspettare la transizione nello stato successivo
             {
                 Debug.Log("Sto ricercando il pezzo dello stato " + State_Machine.getSubStateNumber());
@@ -118,7 +118,7 @@ namespace Vuforia
                             objectFound = true;
                             State_Machine.nextState();
                         }
-                        break;*//*
+                        break;*/
                     case 1: //Ricerca dell'obiettivo finale
                         if (mTrackableBehaviour.name.Equals(State_Machine.getPhaseList()[State_Machine.getPhaseNumber()].getNextTarget().name)) //controllo se lo ho trovato il target finale della fase
                         {
@@ -135,7 +135,7 @@ namespace Vuforia
                         break;
 
                 }
-            }*/
+            }
             
 
            

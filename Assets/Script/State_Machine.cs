@@ -11,7 +11,7 @@ public class State_Machine : MonoBehaviour {
     private const int timerInterval = 20000,stepTimerInterval = 3000,uiTimerInterval = 5000;
     public GameObject UIPanel,responsePanel; //Ui panel where the state machine display a message.
     private int touch;
-    public static Text objectText,responseText;
+    public Text objectText,responseText;
     private static string[] uiText = {""};
     private const string OBJECT_FOUND = "OBJECT FOUND", OBJECT_NOT_FOUND = "OBJECT NOT FOUND";
     public GameObject[] multipleObjectArray = new GameObject[10];  //global target -- single object
@@ -43,7 +43,7 @@ public class State_Machine : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        /*
+        
         if (subStateTerminated && subStateNum == 1) //
         {
             responsePanel.SetActive(true);
@@ -58,7 +58,7 @@ public class State_Machine : MonoBehaviour {
             Vuforia.DefaultTrackableEventHandler.setObjectFound(false);
             execute(subStateNum);
         }
-        */
+        
         
 	}
     
