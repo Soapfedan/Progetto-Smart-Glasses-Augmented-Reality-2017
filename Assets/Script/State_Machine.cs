@@ -8,7 +8,7 @@ public class State_Machine : MonoBehaviour {
     private static Timer atimer,stepTimer,uiTimer;
     private static bool currentFound, nextFound, singleFound, //flag
         subStateTerminated;
-    private static string[] textMessages = {"Take the cone and insert the metal ring","Insert the grinding tool","Insert the flange and the screw"};
+    private static string[] textMessages = {"1. Take the cone and insert the metal ring","2. Insert the grinding tool","3. Insert the flange and the screw"};
     private const int timerInterval = 20000,stepTimerInterval = 4000,uiTimerInterval = 4000;
     public GameObject UIPanel,responsePanel; //Ui panel where the state machine display a message.
     private int touch;
@@ -101,8 +101,7 @@ public class State_Machine : MonoBehaviour {
                 Debug.Log("stato " + subStateNum);
                 Debug.Log("Inquadra l'oggeto finale");
                 objectText.text = textMessages[phaseNum];
-                AnimatorController.playAnim = true;
-                
+                AnimatorController.playAnim = true;                
                 atimer = new Timer();
                 atimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
                 atimer.Interval = timerInterval; //ms

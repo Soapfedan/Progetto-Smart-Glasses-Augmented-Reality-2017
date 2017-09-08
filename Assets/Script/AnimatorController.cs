@@ -13,7 +13,7 @@ public class AnimatorController : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        //disableObjects();
+        disableObjects();
         anim = GetComponent<Animator>();
         playAnim = false;
     }
@@ -29,10 +29,10 @@ public class AnimatorController : MonoBehaviour {
             switch (State_Machine.getPhaseNumber())
             {
                 case 0:
-                    disableObjects();
+                    //disableObjects();
                     gameobjs[4].SetActive(true);
                     gameobjs[3].SetActive(true);
-                    anim.Play("pezzo5", -1, 0f);                    
+                    anim.Play("pezzo4-5", -1, 0f);                    
                     //Debug.Log(gameobjs[4].name);
 
                     
@@ -47,19 +47,20 @@ public class AnimatorController : MonoBehaviour {
                 case 2:
                     gameobjs[1].SetActive(true);
                     gameobjs[0].SetActive(true);
-                    anim.Play("pezzo2", -1, 0f);
+                    anim.Play("pezzo1-2", -1, 0f);
                    // Debug.Log(gameobjs[1].name);
                     //.Play("pezzo1", -1, 0f);
                    // Debug.Log(gameobjs[0].name);
                     break;
             }
-            playAnim = false;
+            //playAnim = false;
 
         }
         else
         {
-            disableObjects();
+           anim.Play("idle", -1, 0f);
         }
+        
 
 
     }
