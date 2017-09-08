@@ -8,10 +8,12 @@ public class State_Machine : MonoBehaviour {
     private static Timer atimer,stepTimer,uiTimer;
     private static bool currentFound, nextFound, singleFound, //flag
         subStateTerminated;
-    private const int timerInterval = 20000,stepTimerInterval = 3000,uiTimerInterval = 5000;
+    private static string[] textMessages = {"Take the cone and insert the metal ring","Insert the grinding tool","Insert the flange and the screw"};
+    private const int timerInterval = 20000,stepTimerInterval = 4000,uiTimerInterval = 4000;
     public GameObject UIPanel,responsePanel; //Ui panel where the state machine display a message.
     private int touch;
     public Text objectText,responseText;
+    private static Text objText;
     private static string[] uiText = {""};
     private const string OBJECT_FOUND = "OBJECT FOUND", OBJECT_NOT_FOUND = "OBJECT NOT FOUND";
     public GameObject[] multipleObjectArray = new GameObject[10];  //global target -- single object
@@ -38,25 +40,31 @@ public class State_Machine : MonoBehaviour {
         singleFound = false;
         subStateTerminated = true;
         responsePanel.SetActive(false);
+        objText = objectText;
         
     }
 	
 	// Update is called once per frame
 	void Update () {
-        
-        if (subStateTerminated && subStateNum == 1) //
+        if (phaseNum < 2)
         {
-            responsePanel.SetActive(true);
-            responseText.text = "Ok oggetto rilevato";
-            stepTimer = new Timer();
-            stepTimer.Elapsed += new ElapsedEventHandler(OnStepTimedEvent);
-            stepTimer.Interval = stepTimerInterval; //ms
-            stepTimer.Enabled = true;
-            stepTimer.Start();            
-        }else if(Input.touchCount > 0 && subStateNum == 0 && subStateTerminated)
-        {
-            Vuforia.DefaultTrackableEventHandler.setObjectFound(false);
-            execute(subStateNum);
+
+            if (subStateTerminated && subStateNum == 1) //
+            {
+                responsePanel.SetActive(true);
+                responseText.text = "Object found";
+                uiTimer = new Timer();
+                uiTimer.Elapsed += new ElapsedEventHandler(OnUITimedEvent);
+                uiTimer.Interval = stepTimerInterval; //ms
+                uiTimer.Enabled = true;
+                uiTimer.Start();
+                execute(subStateNum);
+            }
+            else if (Input.touchCount > 0 && subStateNum == 0 && subStateTerminated)
+            {
+                Vuforia.DefaultTrackableEventHandler.setObjectFound(false);
+                execute(subStateNum);
+            }
         }
         
         
@@ -70,7 +78,8 @@ public class State_Machine : MonoBehaviour {
             case 0: //Stato in cui si deve inquadrare il target iniziale
                 Debug.Log("stato " + subStateNum);
                 Debug.Log("Inquadra la scena per iniziare");
-                objectText.text = "Inquadra l'oggetto di partenza";
+                AnimatorController.playAnim = false;
+                objectText.text = "Look the current object";
                 atimer = new Timer();
                 atimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
                 atimer.Interval = timerInterval; //ms
@@ -91,9 +100,9 @@ public class State_Machine : MonoBehaviour {
             
                 Debug.Log("stato " + subStateNum);
                 Debug.Log("Inquadra l'oggeto finale");
-                objectText.text = "Inquadra il target finale";
+                objectText.text = textMessages[phaseNum];
                 AnimatorController.playAnim = true;
-                stepTimer.Stop();
+                
                 atimer = new Timer();
                 atimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
                 atimer.Interval = timerInterval; //ms
@@ -114,16 +123,24 @@ public class State_Machine : MonoBehaviour {
 
     public static void nextState() //metodo che reinizializza tutti i parametri per il substate successivo
     {
-        //currentFound = false;        
+        currentFound = false;
         nextFound = false;
-        singleFound = false;        
+        singleFound = false;
         subStateTerminated = true;
         atimer.Stop();
-        subStateNum = (subStateNum++) % 2;
-        if (subStateNum == 0) {
+        subStateNum++;
+        if (subStateNum == 2) {            
             phaseNum++;
+            if (phaseNum < 2)
+            {
+                subStateNum = 0;
+                objText.text = "Press NEXT to begin";
+            }
+            else {
+                objText.text = "Task completed";
+            }
         }        
-        Debug.Log("Cambiamento di stato a " + subStateNum);
+        Debug.Log("Fase " + phaseNum +" Cambiamento di stato a " + subStateNum);
 
     }
 
@@ -160,30 +177,30 @@ public class State_Machine : MonoBehaviour {
     private void OnTimedEvent(object source, ElapsedEventArgs e)
     {
         Debug.Log("Timer scaduto!");
+        atimer.Stop();        
         switch (subStateNum)
         {            
             case 0:
                 Debug.Log("Non riesco ad inquadrare il target di partenza!");
                 responsePanel.SetActive(true);
-                responseText.text = "Non ho trovato l'oggetto riprova";               
+                responseText.text = "Retry, object not found";               
                 uiTimer = new Timer();
                 uiTimer.Elapsed += new ElapsedEventHandler(OnUITimedEvent);
                 uiTimer.Interval = uiTimerInterval; //ms
                 uiTimer.Enabled = true;
-                uiTimer.Start();
-                execute(subStateNum);
+                uiTimer.Start();                
                 break;
             case 1:
                 Debug.Log("Non riesco ad inquadrare il target finale!");
                 if (!singleFound) //non è stato trovato nulla
                 {
                     responsePanel.SetActive(true);
-                    responseText.text = "Non ho trovato l'oggetto riprova";
+                    responseText.text = "Retry, object not found";
                 }
                 else //è stato trovato solo l'oggetto singolo
                 {
                     responsePanel.SetActive(true);
-                    responseText.text = "Hai montato male il pezzo";
+                    responseText.text = "Wrong assembly";
                 }
                 uiTimer = new Timer();
                 uiTimer.Elapsed += new ElapsedEventHandler(OnUITimedEvent);
@@ -196,14 +213,12 @@ public class State_Machine : MonoBehaviour {
                 break;
         }
     }
-
-    private void OnStepTimedEvent(object source, ElapsedEventArgs e) {
-        responsePanel.SetActive(false);
-        execute(subStateNum);
-    }
+    
 
     private void OnUITimedEvent(object source, ElapsedEventArgs e)
     {
         responsePanel.SetActive(false);
+        uiTimer.Stop();
+
     }
 }

@@ -26,18 +26,24 @@ AnimationClip:
       - serializedVersion: 2
         time: 0.5
         value: {x: -0, y: 3.2375517, z: -0}
-        inSlope: {x: 0, y: 0.02182919, z: 0}
-        outSlope: {x: 0, y: 0.02182919, z: 0}
+        inSlope: {x: 0, y: 0.029533608, z: 0}
+        outSlope: {x: 0, y: 0.029533608, z: 0}
         tangentMode: 0
       - serializedVersion: 2
-        time: 2.3
-        value: {x: -0, y: 3.993938, z: -0}
-        inSlope: {x: 0, y: 0, z: 0}
-        outSlope: {x: 0, y: 0, z: 0}
+        time: 1.7
+        value: {x: -0, y: 5.1575656, z: -0}
+        inSlope: {x: 0, y: 1.9793993, z: 0}
+        outSlope: {x: 0, y: 1.9793993, z: 0}
         tangentMode: 0
       - serializedVersion: 2
         time: 3
-        value: {x: -0, y: 3.992, z: 0}
+        value: {x: -0, y: 8.275997, z: 0}
+        inSlope: {x: 0, y: 0.35726285, z: 0}
+        outSlope: {x: 0, y: 0.35726285, z: 0}
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 3.05
+        value: {x: -0, y: 8.28502, z: -0}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -68,7 +74,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 3
+    m_StopTime: 3.05
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -118,18 +124,18 @@ AnimationClip:
       - serializedVersion: 2
         time: 0.5
         value: 3.2375517
-        inSlope: 0.02182919
-        outSlope: 0.02182919
+        inSlope: 0.029533608
+        outSlope: 0.029533608
         tangentMode: 136
       - serializedVersion: 2
-        time: 2.3
-        value: 3.993938
-        inSlope: 0
-        outSlope: 0
+        time: 1.7
+        value: 5.1575656
+        inSlope: 1.9793993
+        outSlope: 1.9793993
         tangentMode: 136
       - serializedVersion: 2
-        time: 3
-        value: 3.992
+        time: 3.05
+        value: 8.28502
         inSlope: 0
         outSlope: 0
         tangentMode: 136

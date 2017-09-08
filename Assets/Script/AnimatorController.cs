@@ -13,7 +13,7 @@ public class AnimatorController : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        disableObjects();
+        //disableObjects();
         anim = GetComponent<Animator>();
         playAnim = false;
     }
@@ -33,28 +33,32 @@ public class AnimatorController : MonoBehaviour {
                     gameobjs[4].SetActive(true);
                     gameobjs[3].SetActive(true);
                     anim.Play("pezzo5", -1, 0f);                    
-                    Debug.Log(gameobjs[4].name);
+                    //Debug.Log(gameobjs[4].name);
 
                     
                     //anim.Play("pezzo4", -1, 0f);
-                    Debug.Log(gameobjs[3].name);
+                    //Debug.Log(gameobjs[3].name);
                     break;
                 case 1:
                     gameobjs[2].SetActive(true);
                     anim.Play("pezzo3", -1, 0f);
-                    Debug.Log(gameobjs[2].name);
+                    //Debug.Log(gameobjs[2].name);
                     break;
                 case 2:
                     gameobjs[1].SetActive(true);
                     gameobjs[0].SetActive(true);
                     anim.Play("pezzo2", -1, 0f);
-                    Debug.Log(gameobjs[1].name);
+                   // Debug.Log(gameobjs[1].name);
                     //.Play("pezzo1", -1, 0f);
-                    Debug.Log(gameobjs[0].name);
+                   // Debug.Log(gameobjs[0].name);
                     break;
             }
             playAnim = false;
 
+        }
+        else
+        {
+            disableObjects();
         }
 
 
