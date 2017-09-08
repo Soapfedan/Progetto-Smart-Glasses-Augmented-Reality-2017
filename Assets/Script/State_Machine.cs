@@ -19,7 +19,10 @@ public class State_Machine : MonoBehaviour {
     public GameObject[] multipleObjectArray = new GameObject[10];  //global target -- single object
     private static int phaseNum, //current phase number
          subStateNum; //the number of the substate. A phase is a collection of substates.
-    
+
+    private Outline outline;
+    private Color colorGreen;
+    private Color colorRed;
 
     // Use this for initialization
     void Start () {
@@ -41,11 +44,18 @@ public class State_Machine : MonoBehaviour {
         subStateTerminated = true;
         responsePanel.SetActive(false);
         objText = objectText;
-        
+
+        outline = responsePanel.GetComponent<Outline>();
+
+        colorGreen = new Color(25 / 255f, 150 / 255f, 57 / 255f, 128 / 255f);
+
+        colorRed = new Color(201 / 255f, 35 / 255f, 39 / 255f, 128 / 255f);
     }
 	
 	// Update is called once per frame
 	void Update () {
+
+
         if (phaseNum < 2)
         {
 
@@ -53,6 +63,7 @@ public class State_Machine : MonoBehaviour {
             {
                 responsePanel.SetActive(true);
                 responseText.text = "Object found";
+                outline.effectColor = colorGreen;
                 uiTimer = new Timer();
                 uiTimer.Elapsed += new ElapsedEventHandler(OnUITimedEvent);
                 uiTimer.Interval = stepTimerInterval; //ms
@@ -182,7 +193,8 @@ public class State_Machine : MonoBehaviour {
             case 0:
                 Debug.Log("Non riesco ad inquadrare il target di partenza!");
                 responsePanel.SetActive(true);
-                responseText.text = "Retry, object not found";               
+                responseText.text = "Retry, object not found";
+                outline.effectColor = colorRed;
                 uiTimer = new Timer();
                 uiTimer.Elapsed += new ElapsedEventHandler(OnUITimedEvent);
                 uiTimer.Interval = uiTimerInterval; //ms
@@ -195,11 +207,13 @@ public class State_Machine : MonoBehaviour {
                 {
                     responsePanel.SetActive(true);
                     responseText.text = "Retry, object not found";
+                    outline.effectColor = colorRed;
                 }
                 else //è stato trovato solo l'oggetto singolo
                 {
                     responsePanel.SetActive(true);
                     responseText.text = "Wrong assembly";
+                    outline.effectColor = colorRed;
                 }
                 uiTimer = new Timer();
                 uiTimer.Elapsed += new ElapsedEventHandler(OnUITimedEvent);
