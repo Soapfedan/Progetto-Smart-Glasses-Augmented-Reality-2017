@@ -55,6 +55,7 @@ public class State_Machine : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        
 
         if (phaseNum < 2)
         {
