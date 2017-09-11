@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Timers;
 using UnityEngine.UI;
+using Vuforia;
+using System.Collections;
+using System.Collections.Generic;
 
 public class State_Machine : MonoBehaviour {
 
@@ -23,6 +26,7 @@ public class State_Machine : MonoBehaviour {
     private Outline outline;
     private Color colorGreen;
     private Color colorRed;
+    private StateManager sm;
 
     // Use this for initialization
     void Start () {
@@ -50,12 +54,23 @@ public class State_Machine : MonoBehaviour {
         colorGreen = new Color(25 / 255f, 150 / 255f, 57 / 255f, 128 / 255f);
 
         colorRed = new Color(201 / 255f, 35 / 255f, 39 / 255f, 128 / 255f);
+
+        sm = TrackerManager.Instance.GetStateManager();
     }
 	
 	// Update is called once per frame
 	void Update () {
 
-        
+        if(Input.GetKeyDown(KeyCode.A))
+        {
+            IEnumerable<TrackableBehaviour> activeTrackables = sm.GetActiveTrackableBehaviours();
+            int cont = 0;
+            foreach (TrackableBehaviour tb in activeTrackables)
+            {
+                if (tb.isActiveAndEnabled) cont++;
+            }
+            Debug.Log("cont " + cont);
+        }
 
         if (phaseNum < 2)
         {
