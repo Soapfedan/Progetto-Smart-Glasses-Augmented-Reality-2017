@@ -61,16 +61,8 @@ public class State_Machine : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if(Input.GetKeyDown(KeyCode.A))
-        {
-            IEnumerable<TrackableBehaviour> activeTrackables = sm.GetActiveTrackableBehaviours();
-            int cont = 0;
-            foreach (TrackableBehaviour tb in activeTrackables)
-            {
-                if (tb.isActiveAndEnabled) cont++;
-            }
-            Debug.Log("cont " + cont);
-        }
+        detectPressedKeyOrButton();
+
 
         if (phaseNum < 2)
         {
@@ -80,6 +72,7 @@ public class State_Machine : MonoBehaviour {
                 responsePanel.SetActive(true);
                 responseText.text = "Object found";
                 outline.effectColor = colorGreen;
+                changeTracking();
                 uiTimer = new Timer();
                 uiTimer.Elapsed += new ElapsedEventHandler(OnUITimedEvent);
                 uiTimer.Interval = stepTimerInterval; //ms
@@ -203,7 +196,8 @@ public class State_Machine : MonoBehaviour {
     private void OnTimedEvent(object source, ElapsedEventArgs e)
     {
         Debug.Log("Timer scaduto!");
-        atimer.Stop();        
+        atimer.Stop();
+        changeTracking();
         switch (subStateNum)
         {            
             case 0:
@@ -242,7 +236,33 @@ public class State_Machine : MonoBehaviour {
                 break;
         }
     }
-    
+
+    public void detectPressedKeyOrButton()
+    {
+        foreach (KeyCode kcode in System.Enum.GetValues(typeof(KeyCode)))
+        {
+            if (Input.GetKeyDown(kcode))
+            {
+                Debug.Log("KeyCode down: " + kcode);
+                objectText.text = kcode.ToString();
+            }
+
+        }
+    }
+        //perdere tracking nel cambio di stato
+    private void changeTracking()
+    {
+        IEnumerable<TrackableBehaviour> activeTrackables = sm.GetActiveTrackableBehaviours();
+        foreach (TrackableBehaviour tb in activeTrackables)
+        {
+            if (tb.isActiveAndEnabled)
+            {
+                tb.enabled = false;
+
+                tb.enabled = true;
+            }
+        }
+    }
 
     private void OnUITimedEvent(object source, ElapsedEventArgs e)
     {
