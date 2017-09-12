@@ -61,7 +61,7 @@ public class State_Machine : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        detectPressedKeyOrButton();
+        //detectPressedKeyOrButton();
 
 
         if (phaseNum < 2)
@@ -80,7 +80,7 @@ public class State_Machine : MonoBehaviour {
                 uiTimer.Start();
                 execute(subStateNum);
             }
-            else if (Input.touchCount > 0 && subStateNum == 0 && subStateTerminated)
+            else if (Input.GetKeyDown(KeyCode.RightArrow) && subStateNum == 0 && subStateTerminated)
             {
                 Vuforia.DefaultTrackableEventHandler.setObjectFound(false);
                 execute(subStateNum);

@@ -144,8 +144,8 @@ PlayerSettings:
     Android: com.ProgettoAugReality.Test
   buildNumber: {}
   AndroidBundleVersionCode: 1
-  AndroidMinSdkVersion: 24
-  AndroidTargetSdkVersion: 0
+  AndroidMinSdkVersion: 21
+  AndroidTargetSdkVersion: 24
   AndroidPreferredInstallLocation: 1
   aotOptions: 
   stripEngineCode: 1
