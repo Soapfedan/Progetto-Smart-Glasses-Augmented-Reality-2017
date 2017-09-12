@@ -71,7 +71,7 @@ public class State_Machine : MonoBehaviour {
             {
                 responsePanel.SetActive(true);
                 responseText.text = "Object found";
-                outline.effectColor = colorGreen;
+                outline.effectColor = Color.green;
                 changeTracking();
                 uiTimer = new Timer();
                 uiTimer.Elapsed += new ElapsedEventHandler(OnUITimedEvent);
@@ -86,6 +86,21 @@ public class State_Machine : MonoBehaviour {
                 execute(subStateNum);
             }
         }
+        /*
+        else if (phaseNum==2)
+        {
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                objectText.text = textMessages[phaseNum];
+                phaseNum++;
+                AnimatorController.playAnim = true;
+            }
+        }
+        else if (phaseNum == 3 && Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            objectText.text = "Task completed";
+        }
+        */
         
         
 	}
@@ -204,7 +219,7 @@ public class State_Machine : MonoBehaviour {
                 Debug.Log("Non riesco ad inquadrare il target di partenza!");
                 responsePanel.SetActive(true);
                 responseText.text = "Retry, object not found";
-                outline.effectColor = colorRed;
+                outline.effectColor = Color.red;
                 uiTimer = new Timer();
                 uiTimer.Elapsed += new ElapsedEventHandler(OnUITimedEvent);
                 uiTimer.Interval = uiTimerInterval; //ms
@@ -217,13 +232,13 @@ public class State_Machine : MonoBehaviour {
                 {
                     responsePanel.SetActive(true);
                     responseText.text = "Retry, object not found";
-                    outline.effectColor = colorRed;
+                    outline.effectColor = Color.red;
                 }
                 else //è stato trovato solo l'oggetto singolo
                 {
                     responsePanel.SetActive(true);
                     responseText.text = "Wrong assembly";
-                    outline.effectColor = colorRed;
+                    outline.effectColor = Color.red;
                 }
                 uiTimer = new Timer();
                 uiTimer.Elapsed += new ElapsedEventHandler(OnUITimedEvent);
@@ -235,6 +250,7 @@ public class State_Machine : MonoBehaviour {
             default:
                 break;
         }
+        atimer.Start();
     }
 
     public void detectPressedKeyOrButton()
@@ -268,6 +284,6 @@ public class State_Machine : MonoBehaviour {
     {
         responsePanel.SetActive(false);
         uiTimer.Stop();
-
+        
     }
 }
