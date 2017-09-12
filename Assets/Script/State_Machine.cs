@@ -168,7 +168,7 @@ public class State_Machine : MonoBehaviour {
             if (phaseNum < 2)
             {
                 subStateNum = 0;
-                objText.text = "Press NEXT to begin";
+                objText.text = "Press NEXT to continue";
             }
             else {
                 objText.text = "Task completed";
